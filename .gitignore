@@ -1,4 +1,21 @@
-__pycache__
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE
+.idea/
+.vscode/
+
+# macOS
+.DS_Store
+
+# Project specific
+datas/
+*.xlsx
+package-lock.json
+package.json
+
 node_modules/
 *.so
 .Python

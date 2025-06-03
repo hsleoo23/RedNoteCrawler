@@ -163,13 +163,7 @@ class XHS_Apis():
         return success, msg, res_json
 
     def get_user_note_info(self, user_id: str, cursor: str, cookies_str: str, xsec_token='', xsec_source='', proxies: dict = None):
-        """
-            获取用户指定位置的笔记
-            :param user_id: 你想要获取的用户的id
-            :param cursor: 你想要获取的笔记的cursor
-            :param cookies_str: 你的cookies
-            返回用户指定位置的笔记
-        """
+        print("get_user_note_info 被调用, user_id:", user_id, "cursor:", cursor)
         res_json = None
         try:
             api = f"/api/sns/web/v1/user_posted"
@@ -186,26 +180,29 @@ class XHS_Apis():
             response = requests.get(self.base_url + splice_api, headers=headers, cookies=cookies, proxies=proxies)
             res_json = response.json()
             success, msg = res_json["success"], res_json["msg"]
+            print("get_user_note_info 返回的 res_json：", json.dumps(res_json, ensure_ascii=False, indent=2))
         except Exception as e:
+            print("get_user_note_info 捕获异常：", str(e))
+            print("get_user_note_info 返回的 res_json（异常时）：", json.dumps(res_json, ensure_ascii=False, indent=2) if res_json else "None")
             success = False
             msg = str(e)
         return success, msg, res_json
 
 
     def get_user_all_notes(self, user_url: str, cookies_str: str, proxies: dict = None):
-        """
-           获取用户所有笔记
-           :param user_id: 你想要获取的用户的id
-           :param cookies_str: 你的cookies
-           返回用户的所有笔记
-        """
+        import traceback
         cursor = ''
         note_list = []
         try:
             urlParse = urllib.parse.urlparse(user_url)
             user_id = urlParse.path.split("/")[-1]
-            kvs = urlParse.query.split('&')
-            kvDist = {kv.split('=')[0]: kv.split('=')[1] for kv in kvs}
+            kvDist = {}
+            if urlParse.query:
+                kvs = urlParse.query.split('&')
+                for kv in kvs:
+                    if '=' in kv:
+                        k, v = kv.split('=', 1)
+                        kvDist[k] = v
             xsec_token = kvDist['xsec_token'] if 'xsec_token' in kvDist else ""
             xsec_source = kvDist['xsec_source'] if 'xsec_source' in kvDist else "pc_search"
             while True:
@@ -221,6 +218,8 @@ class XHS_Apis():
                 if len(notes) == 0 or not res_json["data"]["has_more"]:
                     break
         except Exception as e:
+            print("get_user_all_notes 捕获异常：", str(e))
+            traceback.print_exc()
             success = False
             msg = str(e)
         return success, msg, note_list
