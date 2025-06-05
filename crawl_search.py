@@ -4,6 +4,7 @@ from apis.pc_apis import XHS_Apis
 from xhs_utils.data_util import handle_note_info, download_note, save_to_xlsx
 from xhs_utils.common_utils import init
 import traceback
+import time
 
 class Data_Spider():
     def __init__(self):
@@ -42,6 +43,7 @@ class Data_Spider():
         note_list = []
         for note_url in notes:
             success, msg, note_info = self.spider_note(note_url, cookies_str, proxies)
+            time.sleep(1)
             if note_info is not None and success:
                 note_list.append(note_info)
         for note_info in note_list:
