@@ -189,7 +189,7 @@ class XHS_Apis():
         return success, msg, res_json
 
 
-    def get_user_all_notes(self, user_url: str, cookies_str: str, proxies: dict = None):
+    def get_user_all_notes(self, user_url: str,require_num: int, cookies_str: str, proxies: dict = None):
         import traceback
         cursor = ''
         note_list = []
@@ -215,7 +215,7 @@ class XHS_Apis():
                 else:
                     break
                 note_list.extend(notes)
-                if len(notes) == 0 or not res_json["data"]["has_more"]:
+                if len(notes) == 0 or not res_json["data"]["has_more"] or len(note_list) >= require_num:
                     break
         except Exception as e:
             print("get_user_all_notes 捕获异常：", str(e))
@@ -447,7 +447,7 @@ class XHS_Apis():
             msg = str(e)
         return success, msg, res_json
 
-    def search_some_note(self, query: str, require_num: int, cookies_str: str, sort="general", note_type=0, proxies: dict = None):
+    def search_some_note(self, query: str, require_num: int, cookies_str: str, sort="general", note_type=2, proxies: dict = None):
         """
             指定数量搜索笔记，设置排序方式和笔记类型和笔记数量
             :param query 搜索的关键词
