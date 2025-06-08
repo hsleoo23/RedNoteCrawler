@@ -113,8 +113,8 @@ def spider_user_notes(query: str, require_num: int,cookies_str: str, save_choice
 
 if __name__ == "__main__":
     # 示例用户URL和cookies
-    cookies_str = "abRequestId=a9ac639c-07fe-5ca9-915e-b3ba128ced9e; a1=1972aaedecewwpiunuby9v2xpe1jvo55nzgbuinwn30000393812; webId=0207111d377f6f19a886ec15da29a115; gid=yjWJ00ddf4IjyjWJ00dfdu3ISdEEU37I7DvjkEIhJCUdyDq8Vhl227888qjqYyJ8qDSdW2DW; web_session=0400698c9f7a5056709b02910b3a4b70984845; webBuild=4.67.0; websectiga=634d3ad75ffb42a2ade2c5e1705a73c845837578aeb31ba0e442d75c648da36a; sec_poison_id=1a73fb82-548e-4108-aa15-d8aa2b039bad; xsecappid=xhs-pc-web; loadts=1749091586881; acw_tc=0a0bb12f17490915873463643ec479a4d69217c68f12ba5a1bbc8c4187fd5c; unread={%22ub%22:%226840f2fd00000000210007b3%22%2C%22ue%22:%226840dec60000000022034100%22%2C%22uc%22:25}"
-    query="竹林七贤"
+    cookies_str = "abRequestId=a9ac639c-07fe-5ca9-915e-b3ba128ced9e; a1=1972aaedecewwpiunuby9v2xpe1jvo55nzgbuinwn30000393812; webId=0207111d377f6f19a886ec15da29a115; gid=yjWJ00ddf4IjyjWJ00dfdu3ISdEEU37I7DvjkEIhJCUdyDq8Vhl227888qjqYyJ8qDSdW2DW; webBuild=4.68.0; web_session=0400698c9f7a5056709b844f703a4bbd3a5850; unread={%22ub%22:%226835832e000000002101b202%22%2C%22ue%22:%226841c34d000000000c03a7de%22%2C%22uc%22:28}; websectiga=8886be45f388a1ee7bf611a69f3e174cae48f1ea02c0f8ec3256031b8be9c7ee; sec_poison_id=dccdf37a-6e0f-4026-8109-f6e5df23c4d8; xsecappid=ranchi; loadts=1749354781245"
+    query="干敏肌"
     # 调用爬虫函数
     success, msg, note_count = spider_user_notes(query,200, cookies_str)
 

@@ -38,8 +38,6 @@ def save_to_excel(analysis_result: str, output_file: str):
                 "平均分享数": round(heat_data["平均分享数"], 2),
                 "热度排名": heat_data["热度排名"],
                 "热门笔记": hot_notes,
-                # "主要功效": ingredient["成分分析"]["主要功效"],
-                # "使用场景": ingredient["成分分析"]["使用场景"]
             }
             ingredients_data.append(row_data)
         
@@ -94,12 +92,16 @@ def save_to_excel(analysis_result: str, output_file: str):
         print("\n原始数据：")
         print(analysis_result)
 
-def analyze_notes(input_files: list):
-    """使用OpenAI分析小红书笔记数据
+def analyze_multiple_notes(input_files: list):
+    """使用OpenAI分析多个小红书笔记数据文件
     Args:
         input_files: Excel文件路径列表
     """
     try:
+        # 计算每个文件需要处理的数据量
+        notes_per_file = 280 // len(input_files)
+        print(f"每个文件将处理 {notes_per_file} 条数据")
+        
         # 合并所有文件的数据
         all_notes_data = []
         for input_file in input_files:
@@ -107,8 +109,15 @@ def analyze_notes(input_files: list):
             df = pd.read_excel(input_file)
             print(f"成功读取文件：{input_file}")
             
+            # 计算互动量（点赞数+收藏数）
+            df['互动量'] = df['点赞数量'] + df['收藏数量']
+            
+            # 按互动量排序并选择指定数量的数据
+            df_sorted = df.sort_values('互动量', ascending=False).head(notes_per_file)
+            print(f"从文件 {input_file} 中选择互动量最高的 {notes_per_file} 条数据")
+            
             # 准备数据
-            for _, row in df.iterrows():
+            for _, row in df_sorted.iterrows():
                 try:
                     note = {
                         "标题": str(row["标题"]),
@@ -189,7 +198,7 @@ def analyze_notes(input_files: list):
         
         # 生成输出文件名（包含时间戳）
         timestamp = datetime.now().strftime("%Y%m%d")
-        output_file = f"datas/analysis_results/分析_{timestamp}.xlsx"
+        output_file = f"datas/analysis_results/多文件分析_{timestamp}.xlsx"
         
         # 确保输出目录存在
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
@@ -206,9 +215,9 @@ def main():
         # 可以传入多个文件进行分析
         input_files = [
             "datas/excel_datas/低卡甜品.xlsx",
-            "datas/excel_datas/其他数据.xlsx"  # 添加更多文件
+            "datas/excel_datas/减脂期甜品.xlsx"  # 添加更多文件
         ]
-        analyze_notes(input_files)
+        analyze_multiple_notes(input_files)
     except Exception as e:
         print(f"程序运行出错: {str(e)}")
 
